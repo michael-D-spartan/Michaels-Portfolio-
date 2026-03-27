@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Skincare-shop</title>
+<style>
+/* GENERAL */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#43154d,#ec4899);
+  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  align-items: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.icon-btn {
+  position: relative;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: red;
+  border-radius: 50%;
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+/* PRODUCT GRID */
+.container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  color: black;
+  border-radius: 15px;
+  padding: 15px;
+  position: relative;
+  text-align: center;
+}
+
+.card img, .card svg {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.wishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+button {
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.buy {
+  background: #43154d;
+  color: white;
+}
+
+.cart {
+  background: #ec4899;
+  color: white;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background: white;
+  color: black;
+  width: 90%;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.modal-content h3, .modal-content h4 {
+  margin: 10px 0;
+}
+
+.modal-content p {
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qty-btn {
+  background: #43154d;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-weight: bold;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Skincare-shop</div>
+
+  <div class="icon-btn" onclick="openCart()">
+    <!-- CART SVG -->
+    <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
+      <path d="M7 4h-2l-1 2v2h2l3.6 7.6-1.35 2.45c-.16.28-.25.61-.25.95 0 1.1.9 2 2 2h10v-2h-10l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1h-15z"/>
+    </svg>
+    <span class="cart-count" id="cartCount">0</span>
+  </div>
+</header>
+
+<div class="container" id="products"></div>
+
+<!-- CART MODAL -->
+<div class="modal" id="cartModal">
+  <div class="modal-content">
+    <h3>Cart</h3>
+    <div id="cartItems"></div>
+    <h4>Total: ₦<span id="total">0</span></h4>
+    <button onclick="closeCart()">Close</button>
+  </div>
+</div>
+
+<script>
+// PRODUCTS DATA
+const products = [
+  {id:1, name:"Glow Serum", price:5000},
+  {id:2, name:"Acne Cleanser", price:3000},
+  {id:3, name:"Moisturizer", price:4500},
+  {id:4, name:"Sunscreen", price:4000}
+];
+
+// STATE
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+// RENDER PRODUCTS
+function render(){
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  products.forEach(p => {
+    container.innerHTML += `
+      <div class="card" id="product-${p.id}">
+        <div class="wishlist" onclick="toggleWishlist(${p.id})">
+          ${wishlist.includes(p.id) ? heartFilled() : heartOutline()}
+        </div>
+
+        <!-- LOCAL SVG IMAGE PLACEHOLDER -->
+        <svg width="100%" height="150" viewBox="0 0 200 150">
+          <rect width="200" height="150" fill="#eee"/>
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#999">
+            Product
+          </text>
+        </svg>
+
+        <h3>${p.name}</h3>
+        <p>₦${p.price}</p>
+
+        <button class="buy" onclick="buyNow(${p.id})">Buy Now</button>
+        <button class="cart" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    `;
+  });
+
+  updateCart();
+}
+
+// SVG HEARTS
+function heartFilled(){
+  return `<svg width="20" height="20" fill="red" viewBox="0 0 24 24">
+    <path d="M12 21s-6-4.35-9-8.5C1 8.5 3 5 6 5c2 0 3 1 4 2 1-1 2-2 4-2 3 0 5 3.5 3 7.5C18 16.65 12 21 12 21z"/>
+  </svg>`;
+}
+
+function heartOutline(){
+  return `<svg width="20" height="20" fill="none" stroke="red" viewBox="0 0 24 24">
+    <path d="M12 21s-6-4.35-9-8.5C1 8.5 3 5 6 5c2 0 3 1 4 2 1-1 2-2 4-2 3 0 5 3.5 3 7.5C18 16.65 12 21 12 21z"/>
+  </svg>`;
+}
+
+// CART LOGIC
+function addToCart(id){
+  let item = cart.find(i => i.id === id);
+  let product = products.find(p => p.id === id);
+
+  if(item){
+    item.qty++;
+  } else {
+    cart.push({...product, qty:1});
+  }
+
+  saveCart();
+}
+
+function buyNow(id){
+  addToCart(id);
+  openCart();
+  // Scroll to product in cart
+  setTimeout(()=>{
+    const el = document.getElementById(`cart-item-${id}`);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 100);
+}
+
+function toggleWishlist(id){
+  if(wishlist.includes(id)){
+    wishlist = wishlist.filter(i => i !== id);
+  } else {
+    wishlist.push(id);
+  }
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  render();
+}
+
+function saveCart(){
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCart();
+}
+
+// UPDATE CART DISPLAY & COUNT
+function updateCart(){
+  const countEl = document.getElementById("cartCount");
+  const itemsEl = document.getElementById("cartItems");
+  const totalEl = document.getElementById("total");
+
+  // total quantity
+  let totalQty = cart.reduce((sum,item)=> sum + item.qty, 0);
+  countEl.innerText = totalQty;
+
+  itemsEl.innerHTML = "";
+  let totalPrice = 0;
+
+  cart.forEach(item=>{
+    totalPrice += item.price * item.qty;
+    itemsEl.innerHTML += `
+      <p id="cart-item-${item.id}">
+        ${item.name} x${item.qty} 
+        <span>
+          <span class="qty-btn" onclick="changeQty(${item.id}, -1)">-</span>
+          <span class="qty-btn" onclick="changeQty(${item.id}, 1)">+</span>
+        </span>
+      </p>
+    `;
+  });
+
+  totalEl.innerText = totalPrice;
+}
+
+// CHANGE QUANTITY
+function changeQty(id, delta){
+  const item = cart.find(i=>i.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty < 1) cart = cart.filter(i=>i.id!==id);
+  saveCart();
+}
+
+// MODAL
+function openCart(){
+  document.getElementById("cartModal").style.display = "block";
+}
+
+function closeCart(){
+  document.getElementById("cartModal").style.display = "none";
+}
+
+// INIT
+render();
+</script>
+</body>
+</html>

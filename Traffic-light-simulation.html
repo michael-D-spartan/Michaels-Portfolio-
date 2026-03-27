@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advanced Traffic Sensor Dashboard</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#1e3c72,#2a5298);
+  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(0,0,0,0.2);
+}
+
+h1 {
+  margin: 0;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #ff6b6b;
+  color: white;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.sensor-status {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-left: 6px;
+}
+
+canvas {
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  height: 300px;
+  display: block;
+  margin: 20px auto;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Traffic Sensor Dashboard</h1>
+  <button onclick="refreshData()">Refresh</button>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h3>Cars <span id="statusCars" class="sensor-status"></span></h3>
+    <p id="countCars">0</p>
+  </div>
+  <div class="card">
+    <h3>Trucks <span id="statusTrucks" class="sensor-status"></span></h3>
+    <p id="countTrucks">0</p>
+  </div>
+  <div class="card">
+    <h3>Motorcycles <span id="statusBikes" class="sensor-status"></span></h3>
+    <p id="countBikes">0</p>
+  </div>
+</div>
+
+<canvas id="trafficChart"></canvas>
+
+<script>
+// STATE
+let trafficData = {
+  cars: 0,
+  trucks: 0,
+  bikes: 0,
+  history: []
+};
+
+// HELPER: Random Sensor Status
+function sensorStatus() {
+  return Math.random() > 0.1 ? 'green' : 'red';
+}
+
+// REFRESH SIMULATION
+function refreshData() {
+  trafficData.cars = Math.floor(Math.random()*100);
+  trafficData.trucks = Math.floor(Math.random()*50);
+  trafficData.bikes = Math.floor(Math.random()*80);
+
+  // push history
+  trafficData.history.push({
+    cars: trafficData.cars,
+    trucks: trafficData.trucks,
+    bikes: trafficData.bikes
+  });
+  if(trafficData.history.length>20) trafficData.history.shift();
+
+  // update counts
+  document.getElementById('countCars').innerText = trafficData.cars;
+  document.getElementById('countTrucks').innerText = trafficData.trucks;
+  document.getElementById('countBikes').innerText = trafficData.bikes;
+
+  // update status indicators
+  document.getElementById('statusCars').style.background = sensorStatus();
+  document.getElementById('statusTrucks').style.background = sensorStatus();
+  document.getElementById('statusBikes').style.background = sensorStatus();
+
+  drawChart();
+}
+
+// SIMPLE CANVAS CHART
+function drawChart() {
+  const canvas = document.getElementById('trafficChart');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const w = canvas.width;
+  const h = canvas.height;
+
+  const max = 100;
+  const len = trafficData.history.length;
+  const step = w / (len-1 || 1);
+
+  // draw grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.beginPath();
+  for(let i=0;i<=5;i++){
+    ctx.moveTo(0, h/5*i);
+    ctx.lineTo(w, h/5*i);
+  }
+  ctx.stroke();
+
+  // draw lines
+  ['cars','trucks','bikes'].forEach((type,index)=>{
+    ctx.beginPath();
+    ctx.strokeStyle = ['#ff6b6b','#feca57','#1dd1a1'][index];
+    trafficData.history.forEach((d,i)=>{
+      const y = h - (d[type]/max)*h;
+      const x = i*step;
+      if(i===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  });
+}
+
+// AUTO REFRESH EVERY 3 SECONDS
+setInterval(refreshData, 3000);
+refreshData();
+</script>
+</body>
+</html>
