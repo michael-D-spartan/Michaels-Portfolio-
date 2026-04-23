@@ -2,48 +2,240 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Michael-Tech-Canvas Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Basic Reset */
 * {margin:0; padding:0; box-sizing:border-box;}
-body {font-family: Arial, sans-serif; background:#f5f5f5; color:#333;}
+body {font-family: 'Poppins', Arial, sans-serif; background:#f5f5f5; color:#333; overflow-x: hidden;}
 
-/* HEADER */
-header {
-  background: linear-gradient(135deg,#6a11cb,#2575fc);
-  padding: 40px 20px;
-  text-align: center;
+/* STICKY HEADER */
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 30, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #00D2FF;
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
   color: white;
+  font-weight: 500;
+  transition: color 0.3s;
   position: relative;
 }
 
-header img {
-  width: 120px;
-  height: 120px;
+.nav-links a:hover {
+  color: #00D2FF;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #00D2FF;
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* HAMBURGER MENU */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+  padding: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #00D2FF;
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* HERO SECTION */
+.hero {
+  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a3e 30%, #2d1b69 60%, #0f0f2d 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 40px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Bokeh Effect */
+.bokeh {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 210, 255, 0.15);
+  filter: blur(40px);
+  animation: float 8s infinite ease-in-out;
+}
+
+.bokeh-1 {
+  width: 200px;
+  height: 200px;
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.bokeh-2 {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 10%;
+  animation-delay: 2s;
+  background: rgba(106, 17, 203, 0.2);
+}
+
+.bokeh-3 {
+  width: 100px;
+  height: 100px;
+  bottom: 20%;
+  left: 15%;
+  animation-delay: 4s;
+  background: rgba(37, 117, 252, 0.15);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-30px); }
+}
+
+.hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-left h1 {
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.hero-left h1 span {
+  color: #00D2FF;
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+
+.cta-button {
+  display: inline-block;
+  background: #00D2FF;
+  color: #0a0a1e;
+  padding: 15px 40px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 210, 255, 0.6);
+}
+
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-image {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: #00D2FF;
+  padding: 8px;
+  box-shadow: 0 10px 40px rgba(0, 210, 255, 0.3);
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid white;
-  margin-bottom: 15px;
 }
 
-header h1 {
-  font-size: 28px;
-  margin-bottom: 5px;
+/* PROJECTS SECTION */
+.projects-section {
+  padding: 80px 40px;
+  background: #f5f5f5;
 }
 
-header p {
-  font-size: 16px;
-  opacity: 0.8;
+.section-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 50px;
+  color: #1a1a3e;
 }
 
-/* WALL GRID */
 .container {
   max-width: 1200px;
-  margin: 30px auto;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-  gap: 20px;
-  padding: 0 20px;
+  gap: 30px;
 }
 
 /* PROJECT CARD */
@@ -52,116 +244,663 @@ header p {
   border-radius: 12px;
   overflow: hidden;
   box-shadow:0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
   display: flex;
   flex-direction: column;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow:0 8px 16px rgba(0,0,0,0.2);
+  transform: translateY(-8px);
+  box-shadow:0 12px 24px rgba(0,0,0,0.2);
 }
 
 .card img {
   width: 100%;
-  height: 160px;
+  height: 180px;
   object-fit: cover;
 }
 
 .card-content {
-  padding: 15px;
+  padding: 20px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-content h3 {
   font-size: 20px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  color: #1a1a3e;
 }
 
 .card-content p {
   font-size: 14px;
   color:#555;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  flex: 1;
 }
 
 .card-content a {
   text-decoration:none;
   color:white;
-  background:#6a11cb;
-  padding:8px 12px;
+  background:linear-gradient(135deg,#6a11cb,#2575fc);
+  padding:10px 15px;
   border-radius:8px;
-  font-weight:bold;
-  transition: background 0.2s;
+  font-weight:600;
+  transition: all 0.3s;
+  text-align: center;
 }
 
 .card-content a:hover {
-  background:#2575fc;
+  background:linear-gradient(135deg,#2575fc,#6a11cb);
+  transform: scale(1.05);
+}
+
+/* ABOUT SECTION */
+.about-section {
+  padding: 80px 40px;
+  background: white;
+}
+
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.about-image {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#6a11cb,#2575fc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 60px;
+  font-weight: 700;
+}
+
+.about-text h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #1a1a3e;
+}
+
+.about-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+/* SKILLS SECTION */
+.skills-section {
+  padding: 80px 40px;
+  background: #f5f5f5;
+}
+
+.skills-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.skill-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.skill-card:hover {
+  transform: translateY(-5px);
+}
+
+.skill-card h3 {
+  color: #1a1a3e;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.skill-bar {
+  background: #e0e0e0;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  border-radius: 5px;
+}
+
+.skill-percentage {
+  color: #666;
+  font-weight: 600;
+}
+
+/* EXPERIENCE SECTION */
+.experience-section {
+  padding: 80px 40px;
+  background: white;
+}
+
+.experience-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.experience-card {
+  background: #f5f5f5;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #6a11cb;
+}
+
+.experience-card h3 {
+  color: #1a1a3e;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.experience-card .company {
+  color: #6a11cb;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.experience-card p {
+  color: #555;
+  line-height: 1.6;
+}
+
+/* EDUCATION SECTION */
+.education-section {
+  padding: 80px 40px;
+  background: #f5f5f5;
+}
+
+.education-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.education-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.education-card h3 {
+  color: #1a1a3e;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.education-card .institution {
+  color: #6a11cb;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.education-card .status {
+  color: #2575fc;
+  font-weight: 600;
+}
+
+/* CERTIFICATIONS */
+.certifications-section {
+  padding: 80px 40px;
+  background: white;
+}
+
+.certifications-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cert-card {
+  background: #f5f5f5;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #2575fc;
+}
+
+.cert-card h3 {
+  color: #1a1a3e;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.cert-card .institution {
+  color: #6a11cb;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.cert-card .date {
+  color: #555;
+  font-size: 14px;
+}
+
+.cert-card .status {
+  color: #ff9800;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* CONTACT SECTION */
+.contact-section {
+  padding: 80px 40px;
+  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a3e 100%);
+  color: white;
+}
+
+.contact-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.contact-info h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #00D2FF;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.contact-link {
+  display: inline-block;
+  background: rgba(0, 210, 255, 0.1);
+  border: 2px solid #00D2FF;
+  color: #00D2FF;
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.contact-link:hover {
+  background: #00D2FF;
+  color: #0a0a1e;
+  transform: translateY(-3px);
 }
 
 /* FOOTER */
 footer {
   text-align: center;
-  padding: 20px;
-  opacity: 0.7;
+  padding: 30px;
+  background: #0a0a1e;
+  color: rgba(255,255,255,0.7);
   font-size: 14px;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .sticky-header {
+    padding: 15px 20px;
+  }
+  
+  .hamburger {
+    display: flex;
+  }
+  
+  .nav-links {
+    position: fixed;
+    top: 60px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 60px);
+    background: rgba(10, 10, 30, 0.95);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 40px;
+    gap: 0;
+    transition: left 0.3s ease-in-out;
+  }
+  
+  .nav-links.active {
+    left: 0;
+  }
+  
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .nav-links a {
+    display: block;
+    padding: 20px;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.1);
+  }
+  
+  .nav-links a::after {
+    display: none;
+  }
+  
+  .nav-links a:hover {
+    background: rgba(0, 210, 255, 0.1);
+  }
+  
+  .hero {
+    padding: 150px 20px 60px;
+  }
+  
+  .hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .hero-left h1 {
+    font-size: 36px;
+  }
+  
+  .hero-subtitle {
+    font-size: 18px;
+  }
+  
+  .profile-image {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .about-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .about-image {
+    margin: 0 auto;
+  }
+  
+  .contact-links {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <!-- Replace the src with your profile picture -->
-  <img src="ProfilePhoto.jpg" alt="Your Name">
-  <h1>Chinedu-Uzor Ebubechukwu Michael</h1>
-  <p>Web Developer | Web Enthusiast | Portfolio Projects</p>
-</header>
-
-<div class="container">
-  <!-- Project 1 -->
-  <div class="card">
-    <img src="traffic.jpg" alt="Traffic-light-simulation">
-    <div class="card-content">
-      <h3>Advanced Traffic Sensor Dashboard</h3>
-      <p>Interactive dashboard simulating traffic sensors, vehicle counts, and status indicators with charts.</p>
-      <a href="Traffic-light-simulation.html" target="_blank">View Project</a>
-    </div>
+<!-- STICKY HEADER -->
+<nav class="sticky-header">
+  <div class="logo">@MICHAEL</div>
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#projects" class="nav-link">Projects</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#skills" class="nav-link">Skills</a></li>
+    <li><a href="#experience" class="nav-link">Experience</a></li>
+    <li><a href="#education" class="nav-link">Education</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+</nav>
 
-  <!-- Project 2 -->
-  <div class="card">
-    <img src="algebra.jpg" alt="Algebra Challenge">
-    <div class="card-content">
-      <h3>Algebra Challenge Generator</h3>
-      <p>Random algebra problems including polygon angles, linear equations, and expressions with score tracking.</p>
-      <a href="algebra .html" target="_blank">View Project</a>
-    </div>
-  </div>
-
-  <!-- Project 3 -->
-  <div class="card">
-    <img src="planner.jpg" alt="Earnings Planner">
-    <div class="card-content">
-      <h3>Smart Earnings Planner </h3>
-      <p>Earnings tracker with dynamic task adding/removal, total calculation, and goal progress bar.</p>
-      <a href="earnings-planner.html" target="_blank">View Project</a>
-    </div>
-  </div>
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+  <div class="bokeh bokeh-1"></div>
+  <div class="bokeh bokeh-2"></div>
+  <div class="bokeh bokeh-3"></div>
   
-    <!-- Project 4 -->
-  <div class="card">
-    <img src="skincare.jpg" alt="Ecommerce-Skincare-shop">
-    <div class="card-content">
-      <h3> Ecommerce-Skincare-shop</h3>
-      <p> Ecommerce single page website: Its basically a small version oc an online store as a practicecprojectvfor the actuslnwork carried out. </p>.</p>
-      <a href="Skincare-Shop.html" target="_blank">View Project</a>
+  <div class="hero-container">
+    <div class="hero-left">
+      <h1>Michael <span>Chinedu-Uzor</span></h1>
+      <p class="hero-subtitle">Lagos based Frontend Web Developer</p>
+      <a href="#contact" class="cta-button">Get Connected</a>
+    </div>
+    <div class="hero-right">
+      <div class="profile-image">
+        <img src="ProfilePhoto.jpg" alt="Michael Chinedu-Uzor">
+      </div>
     </div>
   </div>
-</div>
+</section>
 
+<!-- PROJECTS SECTION (FIRST) -->
+<section class="projects-section" id="projects">
+  <h2 class="section-title">Featured Projects</h2>
+  <div class="container">
+    <!-- Project 1 -->
+    <div class="card">
+      <img src="traffic.jpg" alt="Traffic-light-simulation">
+      <div class="card-content">
+        <h3>Movie Download site(Film pro)</h3>
+        <p>A sleek Netflix-inspired movie app with a cinematic hero slideshow, interactive movie browsing, and simulated download experience. Perfect for movie enthusiasts looking for a modern and user-friendly interface.</p>
+        <a href="Traffic-light-simulation.html" target="_blank">View Project</a>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="card">
+      <img src="algebra.jpg" alt="Algebra Challenge">
+      <div class="card-content">
+        <h3>Algebra Challenge Generator</h3>
+        <p>Random algebra problems including polygon angles, linear equations, and expressions with score tracking.</p>
+        <a href="algebra .html" target="_blank">View Project</a>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="card">
+      <img src="planner.jpg" alt="Earnings Planner">
+      <div class="card-content">
+        <h3>Smart Earnings Planner</h3>
+        <p>Earnings tracker with dynamic task adding/removal, total calculation, and goal progress bar.</p>
+        <a href="earnings-planner.html" target="_blank">View Project</a>
+      </div>
+    </div>
+    
+    <!-- Project 4 -->
+    <div class="card">
+      <img src="skincare.jpg" alt="Ecommerce-Skincare-shop">
+      <div class="card-content">
+        <h3>Ecommerce Skincare Shop</h3>
+        <p>Ecommerce single page website: A small version of an online store as a practice project for actual work carried out.</p>
+        <a href="Skincare-Shop.html" target="_blank">View Project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about-section" id="about">
+  <h2 class="section-title">About Me</h2>
+  <div class="about-container">
+    <div class="about-image">MC</div>
+    <div class="about-text">
+      <h3>Chinedu-Uzor Ebubechukwu Michael</h3>
+      <p>Electronic & Computer Engineering student with a Diploma in Frontend Web Development and hands-on experience building web projects. Seeking a remote web development internship for SIWES/industrial training to contribute to real projects using HTML, CSS, JavaScript, and modern frameworks.</p>
+      <p>Currently evolving my skill set into React JS 19 — the latest in modern frontend development — with a certification actively in progress. Eager to bring strong problem-solving and quick learning to a dynamic dev team.</p>
+      <p><strong>Location:</strong> Buckor, Lagos State, Nigeria</p>
+      <p><strong>DOB:</strong> 5th Oct 2005</p>
+      <p><strong>Availability:</strong> Full-time industrial training (SIWES) starting April 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS SECTION -->
+<section class="skills-section" id="skills">
+  <h2 class="section-title">Skills & Expertise</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <h3>HTML5</h3>
+      <div class="skill-bar">
+        <div class="skill-fill" style="width: 95%"></div>
+      </div>
+      <p class="skill-percentage">95%</p>
+    </div>
+    <div class="skill-card">
+      <h3>CSS3</h3>
+      <div class="skill-bar">
+        <div class="skill-fill" style="width: 90%"></div>
+      </div>
+      <p class="skill-percentage">90%</p>
+    </div>
+    <div class="skill-card">
+      <h3>JavaScript</h3>
+      <div class="skill-bar">
+        <div class="skill-fill" style="width: 85%"></div>
+      </div>
+      <p class="skill-percentage">85%</p>
+    </div>
+    <div class="skill-card">
+      <h3>React JS 19</h3>
+      <div class="skill-bar">
+        <div class="skill-fill" style="width: 60%"></div>
+      </div>
+      <p class="skill-percentage">60% (In Progress)</p>
+    </div>
+    <div class="skill-card">
+      <h3>Responsive Design</h3>
+      <div class="skill-bar">
+        <div class="skill-fill" style="width: 90%"></div>
+      </div>
+      <p class="skill-percentage">90%</p>
+    </div>
+    <div class="skill-card">
+      <h3>Git & VS Code</h3>
+      <div class="skill-bar">
+        <div class="skill-fill" style="width: 80%"></div>
+      </div>
+      <p class="skill-percentage">80%</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE SECTION -->
+<section class="experience-section" id="experience">
+  <h2 class="section-title">Work Experience</h2>
+  <div class="experience-container">
+    <div class="experience-card">
+      <h3>Online English & Mathematics Tutor</h3>
+      <p class="company">Eduzone | Present</p>
+      <p>Delivered tailored English and Mathematics lessons and tracked student progress through regular assessments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION SECTION -->
+<section class="education-section" id="education">
+  <h2 class="section-title">Education</h2>
+  <div class="education-container">
+    <div class="education-card">
+      <h3>Electronic and Computer Engineering</h3>
+      <p class="institution">Nnamdi Azikiwe University — Awka, Anambra State</p>
+      <p class="status">Ongoing</p>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS SECTION -->
+<section class="certifications-section">
+  <h2 class="section-title">Certifications</h2>
+  <div class="certifications-container">
+    <div class="cert-card">
+      <h3>React JS 19 — Modern Frontend Development</h3>
+      <p class="status">🔄 IN PROGRESS</p>
+      <p>Actively evolving frontend skills into React JS 19 — certification completion expected shortly.</p>
+    </div>
+    <div class="cert-card">
+      <h3>Diploma in Frontend Web Development</h3>
+      <p class="institution">FEBMEX COMPUTER ACADEMY</p>
+      <p class="date">March 2023</p>
+    </div>
+    <div class="cert-card">
+      <h3>Diploma in Graphics Design</h3>
+      <p class="institution">FEBMEX COMPUTER ACADEMY</p>
+      <p class="date">August 2022</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section" id="contact">
+  <h2 class="section-title" style="color: white;">Get In Touch</h2>
+  <div class="contact-container">
+    <div class="contact-info">
+      <h3>Let's Work Together!</h3>
+      <p style="font-size: 18px; opacity: 0.9; line-height: 1.8;">
+        I'm currently available for SIWES/Industrial Training positions and remote web development opportunities.<br>
+        Feel free to reach out!
+      </p>
+      <div class="contact-links">
+        <a href="https://mail.google.com/mail/?view=cm&to=jm76548932@gmail.com" class="contact-link">📧 Email Me</a>
+        <a href="tel:09013230863" class="contact-link">📱 Call Me</a>
+        <a href="https://github.com/michael-D-spartan" target="_blank" class="contact-link">💻 GitHub</a>
+        <a href="https://michaels-cv-portfolio.netlify.app" target="_blank" class="contact-link">🌐 Portfolio</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  &copy; 2026 Chinedu-Uzor Ebubechukwu Michael. All rights reserved.
+  <p>&copy; 2026 Chinedu-Uzor Ebubechukwu Michael. All rights reserved.</p>
+  <p style="margin-top: 10px; opacity: 0.7;">Buckor, Lagos State, Nigeria | 09013230863 | jm76548932@gmail.com</p>
 </footer>
+
+<!-- JAVASCRIPT FOR HAMBURGER MENU -->
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  const navItems = document.querySelectorAll('.nav-link');
+
+  // Toggle mobile menu
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+
+  // Close menu when a link is clicked
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    }
+  });
+</script>
 
 </body>
 </html>
