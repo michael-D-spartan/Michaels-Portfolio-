@@ -13,7 +13,7 @@ const Contact = () => {
             <a href="https://mail.google.com/mail/?view=cm&to=jm76548932@gmail.com" className="contact-link"><FaEnvelope /> </a>
             <a href="tel:09013230863" class="contact-link" className="contact-link"><FaPhone /> </a>
             <a href="https://github.com/michael-D-spartan" target="_blank" rel="noopener noreferrer" className="contact-link"><FaGithub /> </a>
-            <a href="https://michaels-cv-portfolio.netlify.app" target="_blank" rel="noopener noreferrer" className="contact-link"><FaGlobe /> </a>
+            <a href="https://michaels-portfolio-thsz.vercel.app/" target="_blank" rel="noopener noreferrer" className="contact-link"><FaGlobe /> </a>
           </div>
         </div>
       </div>
